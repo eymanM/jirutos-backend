@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Domain.AbstractClasses;
+﻿namespace Domain.AbstractClasses;
 
 public class WorklogRepoAbstract
 {

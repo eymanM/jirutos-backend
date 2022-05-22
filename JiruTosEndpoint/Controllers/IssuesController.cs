@@ -19,7 +19,7 @@ public class IssuesController : ControllerBase
     public ActionResult DateRangeWorklogs([FromBody] ScanDateModel scanDate)
     {
         IWorklogRepo<WorklogForIssue> repo = new WorklogsRepoHandler(_config);
-        List<WorklogForIssue> worklogs = (List<WorklogForIssue>) repo.WorklogsForDateRange(scanDate);
+        var worklogs = (List<WorklogForIssue>)repo.WorklogsForDateRange(scanDate);
 
         List<WorklogForJiraIssueDto> dtos = new();
         foreach (var worklog in worklogs)

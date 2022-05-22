@@ -19,6 +19,6 @@ public class RestClientRequestHandler
     {
         _request.AddJsonBody(body);
 
-        return _client.PostAsync(_request).GetAwaiter().GetResult();
+        return _client.ExecutePostAsync(_request).GetAwaiter().GetResult();
     }
 }

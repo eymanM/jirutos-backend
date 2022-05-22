@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Domain.Models.JiraModels;
+﻿namespace Domain.Models.JiraModels;
 
 public class BodyJQLModel
 {

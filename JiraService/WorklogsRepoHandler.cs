@@ -1,4 +1,6 @@
-﻿namespace JiraService;
+﻿using ErrorService.CustomExceptions;
+
+namespace JiraService;
 
 public class WorklogsRepoHandler : WorklogRepoAbstract, IWorklogRepo<WorklogForIssue>
 {
@@ -11,11 +13,11 @@ public class WorklogsRepoHandler : WorklogRepoAbstract, IWorklogRepo<WorklogForI
         var requestHandler = new RestClientRequestHandler(Config);
         RestResponse response = requestHandler.GetJQLResponse(BodyJSONStrings.CurrentUserDateBoundedWorklogs(dates));
 
-        if (!response.IsSuccessful) throw new Exception("404");
+        if (!response.IsSuccessful) throw new Exception(response.Content);
 
         IssuesReturnRootObj? issuesResponse = JsonConvert.DeserializeObject<IssuesReturnRootObj>(response.Content);
 
-        if (issuesResponse is null) throw new Exception("202");
+        if (issuesResponse is null) throw new StatusCodeException(404);
 
         List<WorklogForIssue> worklogs = issuesResponse.Issues
             .Select(x => x.Fields.Worklog.Worklogs
