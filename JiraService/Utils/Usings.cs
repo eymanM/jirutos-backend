@@ -1,5 +1,4 @@
 ﻿global using Domain.AbstractClasses;
-global using Domain.Interfaces;
 global using Domain.Models.JiraModels;
 global using Domain.Models.JiraModels.IssuesReturnTreeClasses;
 global using Microsoft.Extensions.Configuration;

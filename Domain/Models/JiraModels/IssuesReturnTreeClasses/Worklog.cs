@@ -12,5 +12,5 @@ public class Worklog
     public int Total { get; set; }
 
     [JsonProperty("worklogs")]
-    public WorklogForIssue[] Worklogs { get; set; }
+    public WorklogForJiraIssue[] Worklogs { get; set; }
 }

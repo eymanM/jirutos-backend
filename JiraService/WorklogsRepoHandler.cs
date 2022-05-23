@@ -2,16 +2,18 @@
 
 namespace JiraService;
 
-public class WorklogsRepoHandler : WorklogRepoAbstract, IWorklogRepo<WorklogForIssue>
+public class WorklogsRepoHandler : WorklogRepoAbstract
 {
+    private readonly RestClientRequestHandler _requestHandler;
+
     public WorklogsRepoHandler(IConfiguration config) : base(config)
     {
+        _requestHandler = new(config);
     }
 
-    public IEnumerable<WorklogForIssue> WorklogsForDateRange(ScanDateModel dates)
+    public IEnumerable<WorklogForJiraIssue> WorklogsForDateRange(ScanDateModel dates)
     {
-        var requestHandler = new RestClientRequestHandler(Config);
-        RestResponse response = requestHandler.GetJQLResponse(BodyJSONStrings.CurrentUserDateBoundedWorklogs(dates));
+        RestResponse response = _requestHandler.GetJQLResponse(BodyJSONStrings.CurrentUserDateBoundedWorklogs(dates));
 
         if (!response.IsSuccessful) throw new Exception(response.Content);
 
@@ -19,7 +21,7 @@ public class WorklogsRepoHandler : WorklogRepoAbstract, IWorklogRepo<WorklogForI
 
         if (issuesResponse is null) throw new StatusCodeException(404);
 
-        List<WorklogForIssue> worklogs = issuesResponse.Issues
+        List<WorklogForJiraIssue> worklogs = issuesResponse.Issues
             .Select(x => x.Fields.Worklog.Worklogs
                     .Where(y => y.Author.EmailAddress == Config["AppData:Email"])
                     .Where(z => dates.DateFromDT <= z.startedDT && dates.DateToDT >= z.startedDT))
@@ -27,5 +29,12 @@ public class WorklogsRepoHandler : WorklogRepoAbstract, IWorklogRepo<WorklogForI
             .ToList();
 
         return worklogs;
+    }
+
+    public void UpdateWorklog(UpdateWorklogModel model)
+    {
+        var resp = _requestHandler.UpdateWorklog(model);
+        if (resp.IsSuccessful is false) 
+            throw new Exception(String.IsNullOrEmpty(resp.Content) ? resp.ErrorException.Message : resp.Content);
     }
 }

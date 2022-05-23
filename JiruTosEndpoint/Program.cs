@@ -14,8 +14,14 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 
 var configuration = new MapperConfiguration(cfg =>
 {
-    cfg.CreateMap<WorklogForIssue, WorklogForJiraIssueDto>();
-});
+    cfg.CreateMap<WorklogForJiraIssue, WorklogForJiraIssueDto>()
+    .ForMember(x => x.CommentText, y => y
+    .MapFrom(z => z.Comment.CommentContentObject
+                           .FirstOrDefault().Content.FirstOrDefault().Text));
+})
+{
+};
+
 IMapper mapper = configuration.CreateMapper();
 
 builder.Services.AddSingleton<IMapper>(mapper);

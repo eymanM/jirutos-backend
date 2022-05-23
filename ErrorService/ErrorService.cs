@@ -15,8 +15,14 @@ public static class ErrorService
 
         return
         (
-            200,
-            new { result = false, message = $"Erorr in {exFeature.Path} with message - {exFeature.Error.Message}" }
+            400,
+            new
+            {
+                result = false,
+                message = $"Erorr in {exFeature.Path} " +
+                $"with message - " +
+                $"{exFeature.Error.Message.Replace("\r", "").Replace("\n", "")}"
+            }
         );
     }
 

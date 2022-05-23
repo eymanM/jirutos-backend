@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models.JiraModels.IssuesReturnTreeClasses;
 
-public class WorklogForIssue
+public class WorklogForJiraIssue
 {
     [JsonProperty("self")]
     public string Self { get; set; }
