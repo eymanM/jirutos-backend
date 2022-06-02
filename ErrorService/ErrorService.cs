@@ -19,7 +19,7 @@ public static class ErrorService
             new
             {
                 result = false,
-                message = $"Erorr in {exFeature.Path} " +
+                message = $"Error in {exFeature.Path} " +
                 $"with message - " +
                 $"{exFeature.Error.Message.Replace("\r", "").Replace("\n", "")}"
             }
