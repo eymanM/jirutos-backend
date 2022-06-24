@@ -1,4 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Add services to the container.
 
@@ -14,13 +16,11 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 
 var configuration = new MapperConfiguration(cfg =>
 {
-    cfg.CreateMap<WorklogForJiraIssue, WorklogForJiraIssueDto>()
+    cfg.CreateMap<WorklogForJiraIssue, IssueWorklogDto>()
     .ForMember(x => x.CommentText, y => y
     .MapFrom(z => z.Comment.CommentContentObject
-                           .FirstOrDefault().Content.FirstOrDefault().Text));
-})
-{
-};
+                  .FirstOrDefault().Content.FirstOrDefault().Text));
+});
 
 IMapper mapper = configuration.CreateMapper();
 

@@ -6,10 +6,17 @@ namespace JiruTosEndpoint.Controllers;
 [ApiController]
 public class ErrorController : ControllerBase
 {
+    private readonly ErrorHandler eService;
+
+    public ErrorController(ILogger logger)
+    {
+        eService = new(logger);
+    }
+
     public IActionResult HandleErrors()
     {
         var exteptionFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-        (int statusCode, object? returnObj) = ErrorService.ErrorService.HandleErrors(exteptionFeature);
+        (int statusCode, object? returnObj) = eService.HandleErrors(exteptionFeature);
 
         return StatusCode(statusCode, returnObj);
     }

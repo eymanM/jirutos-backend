@@ -1,4 +1,7 @@
-﻿using JiraService;
+﻿using Foundation;
+using Foundation.Interfaces;
+using Foundation.Models;
+using JiraService;
 
 namespace JiruTosEndpoint.Controllers;
 
@@ -8,34 +11,52 @@ public class IssuesController : ControllerBase
 {
     private readonly IConfiguration _config;
     private readonly IMapper _mapper;
-    private readonly WorklogsRepoHandler _repo;
+    private readonly Fascade _repo;
+    private readonly ILogger<JiraIssueRepository> _logger;
 
-    public IssuesController(IConfiguration config, IMapper mapper)
+    public IssuesController(IConfiguration config, IMapper mapper, ILogger<JiraIssueRepository> logger)
     {
-        _config = config;
         _mapper = mapper;
-        _repo = new(config);
+        _logger = logger;
+        _repo = new Fascade(new List<IIssueRepository>() { new JiraIssueRepository(logger, mapper) });
+    }
+
+    private User resolveUser()
+    {
+        User user = new()
+        {
+            Id = Guid.NewGuid(),
+            Integrations = new List<Integration>()
+        };
+
+        Integration integration = new()
+        {
+            Type = "Jira",
+            Settings = new Dictionary<string, string>()
+            {
+              { "URL", @"https://psw-inzynierka.atlassian.net/rest/api/3" },
+              { "Email", @"ironoth12@gmail.com" },
+              { "Token", @"<token>" }
+            }
+        };
+
+        user.Integrations.Add(integration);
+
+        return user;
     }
 
     [HttpPost]
-    public ActionResult DateRangeWorklogs([FromBody] ScanDateModel scanDate)
+    public ActionResult DateRangeWorklogs([FromBody] DateRange scanDate)
     {
-        var worklogs = _repo.WorklogsForDateRange(scanDate).ToList();
+        var worklogs = _repo.WorklogsForDateRange(resolveUser(), scanDate).ToList();
 
-        List<WorklogForJiraIssueDto> dtos = new();
-        foreach (var worklog in worklogs)
-        {
-            WorklogForJiraIssueDto dto = _mapper.Map<WorklogForJiraIssueDto>(worklog);
-            dtos.Add(dto);
-        }
-
-        return Ok(dtos);
+        return Ok(worklogs);
     }
 
     [HttpPost]
     public ActionResult UpdateWorklog([FromBody] UpdateWorklogModel model)
     {
-        _repo.UpdateWorklog(model);
+        //_repo.UpdateWorklog(model);
         return Ok();
     }
 }

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Foundation\Foundation.csproj" />
     <ProjectReference Include="..\JiraService\JiraService.csproj" />
   </ItemGroup>
 

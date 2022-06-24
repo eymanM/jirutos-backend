@@ -1,5 +1,5 @@
 ﻿global using AutoMapper;
-global using Domain.Models.Dtos;
-global using Domain.Models.JiraModels;
-global using Domain.Models.JiraModels.IssuesReturnTreeClasses;
+global using Foundation.Models.Dtos;
+global using Foundation.Models.JiraModels;
+global using Foundation.Models.JiraModels.IssuesReturnTreeClasses;
 global using Microsoft.AspNetCore.Mvc;
