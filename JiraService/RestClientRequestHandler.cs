@@ -4,9 +4,6 @@ namespace JiraService;
 
 public class RestClientRequestHandler
 {
-    private readonly IConfiguration _config;
-    private readonly RestClient _client;
-
     public static RestResponse GetJQLResponse(Integration integration, BodyJQLModel body, string path = @"/search")
     {
         RestRequest request = new(path);
@@ -15,14 +12,14 @@ public class RestClientRequestHandler
         return getClient(integration.Settings).ExecutePostAsync(request).GetAwaiter().GetResult();
     }
 
-    public RestResponse UpdateWorklog(UpdateWorklogModel model, string path = @"/issue/{issueId}/worklog/{id}")
+    public static RestResponse UpdateWorklog(Integration integration, UpdateWorklogModel model, string path = @"/issue/{issueId}/worklog/{id}")
     {
         RestRequest request = new(path);
         request.AddUrlSegment("issueId", model.IssueId);
         request.AddUrlSegment("id", model.Id);
         request.AddBody(model);
 
-        return _client.ExecutePutAsync(request).GetAwaiter().GetResult();
+        return getClient(integration.Settings).ExecutePutAsync(request).GetAwaiter().GetResult();
     }
 
     private static RestClient getClient(Dictionary<string, string> settings)

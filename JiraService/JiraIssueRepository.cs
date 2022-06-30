@@ -19,7 +19,7 @@ public class JiraIssueRepository : AbstractIssueRepository
         _dtoBuilder = new(mapper);
     }
 
-    public override IEnumerable<IssueWorklogDto> WorklogsForDateRange(Integration integration, DateRange dates)
+    public override IEnumerable<IssueWorklog> WorklogsForDateRange(Integration integration, DateRange dates)
     {
         BodyJQLModel body = JQLQueryBuilder.CurrentUserDateBoundedWorklogs(dates);
         RestResponse response = RestClientRequestHandler.GetJQLResponse(integration, body);
@@ -28,12 +28,14 @@ public class JiraIssueRepository : AbstractIssueRepository
 
         IssuesReturnRootObj? issuesResponse = JsonConvert.DeserializeObject<IssuesReturnRootObj>(response.Content);
 
-        if (issuesResponse is null || !issuesResponse.Issues.Any()) return new List<IssueWorklogDto>();
+        if (issuesResponse is null || !issuesResponse.Issues.Any()) return new List<IssueWorklog>();
 
-        return _dtoBuilder.ToStandartWorklogModel(integration.Settings["Email"], issuesResponse, dates);
+        return _dtoBuilder.ToStandardWorklogModel(integration, issuesResponse, dates);
     }
 
-    public void UpdateWorklog(UpdateWorklogModel model)
+    public override void UpdateWorklog(Integration integration, UpdateWorklogModel model)
     {
+        RestResponse response = RestClientRequestHandler.UpdateWorklog(integration, model);
+        if (!response.IsSuccessful) throw new Exception(response.Content);
     }
 }

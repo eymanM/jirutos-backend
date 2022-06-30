@@ -32,15 +32,29 @@ public class IssuesController : ControllerBase
         Integration integration = new()
         {
             Type = "Jira",
+            Name = @"psw-inzynierka",
             Settings = new Dictionary<string, string>()
             {
               { "URL", @"https://psw-inzynierka.atlassian.net/rest/api/3" },
               { "Email", @"ironoth12@gmail.com" },
-              { "Token", @"<token>" }
-            }
+              { "Token", @"T1J07OmkCFC3hDUQ0FHS9F2C" }
+            },
+        };
+
+        Integration integration2 = new()
+        {
+            Type = "Jira",
+            Name = @"psw-inzynierka2",
+            Settings = new Dictionary<string, string>()
+            {
+              { "URL", @"https://psw-inzynierka2.atlassian.net/rest/api/3" },
+              { "Email", @"stefanowicz20978@student.pswbp.pl" },
+              { "Token", @"wZdCM7kFArrozquIZ05o30B7" }
+            },
         };
 
         user.Integrations.Add(integration);
+        user.Integrations.Add(integration2); ;
 
         return user;
     }
@@ -48,15 +62,14 @@ public class IssuesController : ControllerBase
     [HttpPost]
     public ActionResult DateRangeWorklogs([FromBody] DateRange scanDate)
     {
-        var worklogs = _repo.WorklogsForDateRange(resolveUser(), scanDate).ToList();
-
+        var worklogs = _repo.WorklogsForDateRange(resolveUser(), scanDate);
         return Ok(worklogs);
     }
 
-    [HttpPost]
-    public ActionResult UpdateWorklog([FromBody] UpdateWorklogModel model)
+    [HttpPost("{type}/{name}")]
+    public ActionResult UpdateWorklog(string type, string name, [FromBody] UpdateWorklogModel model)
     {
-        //_repo.UpdateWorklog(model);
+        _repo.UpdateWorklog(resolveUser(), model, type, name);
         return Ok();
     }
 }
