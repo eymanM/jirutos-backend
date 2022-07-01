@@ -22,6 +22,22 @@ public class RestClientRequestHandler
         return getClient(integration.Settings).ExecutePutAsync(request).GetAwaiter().GetResult();
     }
 
+    public static RestResponse AvailableProjectsForUser(Integration integration, string path = @"/permissions/project")
+    {
+        RestRequest request = new(path);
+        List<string> permissionsForLogTime = new() { "WORK_ON_ISSUES" };
+        request.AddBody(new { permissions = permissionsForLogTime });
+
+        return getClient(integration.Settings).ExecutePostAsync(request).GetAwaiter().GetResult();
+    }
+
+    public static RestResponse AllStatuses(Integration integration, string path = @"/status")
+    {
+        RestRequest request = new(path);
+
+        return getClient(integration.Settings).GetAsync(request).GetAwaiter().GetResult();
+    }
+
     private static RestClient getClient(Dictionary<string, string> settings)
     {
         return new(settings["URL"])

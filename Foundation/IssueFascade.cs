@@ -3,11 +3,11 @@ using Foundation.Models;
 
 namespace Foundation;
 
-public class Fascade
+public class IssueFascade
 {
     private readonly List<IIssueRepository> _repositories;
 
-    public Fascade(List<IIssueRepository> repositories)
+    public IssueFascade(List<IIssueRepository> repositories)
     {
         _repositories = repositories;
     }
