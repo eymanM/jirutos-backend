@@ -1,3 +1,9 @@
+using Foundation.Interfaces;
+using Foundation.Models;
+using JiruTosEndpoint;
+using JiruTosEndpoint.Database;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -22,9 +28,8 @@ var configuration = new MapperConfiguration(cfg =>
                   .FirstOrDefault().Content.FirstOrDefault().Text));
 });
 
-IMapper mapper = configuration.CreateMapper();
-
-builder.Services.AddSingleton<IMapper>(mapper);
+builder.Services.AddSingleton<IMapper>(configuration.CreateMapper());
+builder.Services.AddSingleton<IDatabase>(new Database(builder.Configuration["AppData:MongoConnStr"]));
 
 var app = builder.Build();
 
