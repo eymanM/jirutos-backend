@@ -8,6 +8,6 @@ public class Filters
     public static FilterDefinition<User> GetFindUserByMailFilter(string email)
     {
         var builder = Builders<User>.Filter;
-        return builder.Eq("Email", email);
+        return builder.Eq("Email", email); // optimistic offline lock
     }
 }

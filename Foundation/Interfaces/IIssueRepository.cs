@@ -6,7 +6,9 @@ public interface IIssueRepository
 {
     string Type { get; }
 
-    IEnumerable<IssueWorklog> WorklogsForDateRange(Integration integration, DateRange dateRange);
+    IEnumerable<IssueWorklogDto> WorklogsForDateRange(Integration integration, DateRange dateRange);
 
     void UpdateWorklog(Integration integration, UpdateWorklogModel model);
+
+    IEnumerable<IssueForFilter> FilterIssuesByJql(Integration integration, string jql);
 }

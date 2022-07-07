@@ -28,7 +28,7 @@ public class DictionaryController : Controller
     [HttpGet("{type}/{name}")]
     public ActionResult Statuses(string type, string name)
     {
-        var projects = _repo.AllStatuses(_db.FindUser("ironoth12@gmail.com"), type, name);
-        return Ok(projects);
+        var statuses = _repo.AllStatuses(_db.FindUser("ironoth12@gmail.com"), type, name);
+        return Ok(statuses);
     }
 }

@@ -11,7 +11,9 @@ public abstract class AbstractIssueRepository : IIssueRepository
 
     public abstract string Type { get; }
 
-    public abstract IEnumerable<IssueWorklog> WorklogsForDateRange(Integration integration, DateRange dateRange);
+    public abstract IEnumerable<IssueWorklogDto> WorklogsForDateRange(Integration integration, DateRange dateRange);
 
     public abstract void UpdateWorklog(Integration integration, UpdateWorklogModel model);
+
+    public abstract IEnumerable<IssueForFilter> FilterIssuesByJql(Integration integration, string jql);
 }

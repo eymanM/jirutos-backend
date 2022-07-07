@@ -12,7 +12,7 @@ public class DtoBuilder
         _mapper = mapper;
     }
 
-    public List<IssueWorklog> ToStandardWorklogModel(Integration integration, IssuesReturnRootObj? root, DateRange dates)
+    public List<IssueWorklogDto> ToStandardWorklogModel(Integration integration, IssuesReturnRootObj? root, DateRange dates)
     {
         List<WorklogForJiraIssue> worklogs = root.Issues
             .Select(x => x.Fields.Worklog.Worklogs
@@ -21,10 +21,10 @@ public class DtoBuilder
             .Aggregate((x, y) => x.Concat(y)) //combine worklogs from all issues to one list
         .ToList();
 
-        List<IssueWorklog> dtos = new();
+        List<IssueWorklogDto> dtos = new();
         foreach (var worklog in worklogs)
         {
-            IssueWorklog dto = _mapper.Map<IssueWorklog>(worklog);
+            IssueWorklogDto dto = _mapper.Map<IssueWorklogDto>(worklog);
             dto.Type = integration.Type;
             dto.IntegrationName = integration.Name;
             dtos.Add(dto);

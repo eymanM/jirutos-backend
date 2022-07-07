@@ -25,5 +25,5 @@ public class Database : IDatabase
         userCollection.FindOneAndReplace(Filters.GetFindUserByMailFilter(user.Email), user, options);
     }
 
-    public User FindUser(string email) => userCollection.Find(Filters.GetFindUserByMailFilter(email)).First();
+    public User FindUser(string email) => userCollection.Find(Filters.GetFindUserByMailFilter(email)).FirstOrDefault();
 }

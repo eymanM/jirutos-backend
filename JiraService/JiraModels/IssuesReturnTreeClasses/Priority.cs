@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Foundation.Models;
+namespace JiraService.JiraModels.IssuesReturnTreeClasses;
 
-public class Project
+public class Priority
 {
     public string Id { get; set; }
-    public string Key { get; set; }
+    public string IconUrl { get; set; }
     public string Name { get; set; }
 }

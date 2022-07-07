@@ -22,7 +22,7 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 
 var configuration = new MapperConfiguration(cfg =>
 {
-    cfg.CreateMap<WorklogForJiraIssue, IssueWorklog>()
+    cfg.CreateMap<WorklogForJiraIssue, IssueWorklogDto>()
     .ForMember(x => x.CommentText, y => y
     .MapFrom(z => z.Comment.CommentContentObject
                   .FirstOrDefault().Content.FirstOrDefault().Text));

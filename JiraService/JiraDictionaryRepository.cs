@@ -14,12 +14,17 @@ public class JiraDictionaryRepository : IDictionaryRepository
 
     public IEnumerable<Project> AvailableProjectsForUser(Integration integration)
     {
+        List<Project> projects = new List<Project>();
         var response = RestClientRequestHandler.AvailableProjectsForUser(integration);
         if (!response.IsSuccessful) throw new Exception(response.Content);
 
-        ListOfProjects projects = JsonConvert.DeserializeObject<ListOfProjects>(response.Content);
+        dynamic[] projectsJObject = JsonConvert.DeserializeObject<dynamic[]>(response.Content)!;
+        foreach (var item in projectsJObject)
+        {
+            projects.Add(new Project { Id = item.id, Key = item.key, Name = item.name });
+        }
 
-        return projects.Projects;
+        return projects;
     }
 
     public IEnumerable<Status> AllStatuses(Integration integration)

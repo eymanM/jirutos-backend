@@ -9,17 +9,12 @@ namespace JiruTosEndpoint.Controllers;
 [Route("[controller]/[action]")]
 public class IssuesController : ControllerBase
 {
-    private readonly IConfiguration _config;
     private readonly IDatabase _db;
-    private readonly IMapper _mapper;
     private readonly IssueFascade _repo;
-    private readonly ILogger<JiraIssueRepository> _logger;
 
     public IssuesController(IDatabase db, IMapper mapper, ILogger<JiraIssueRepository> logger)
     {
         _db = db;
-        _mapper = mapper;
-        _logger = logger;
         _repo = new IssueFascade(new List<IIssueRepository>() { new JiraIssueRepository(logger, mapper) });
     }
 
@@ -35,5 +30,12 @@ public class IssuesController : ControllerBase
     {
         _repo.UpdateWorklog(_db.FindUser("ironoth12@gmail.com"), model, type, name);
         return Ok();
+    }
+
+    [HttpGet("{type}/{name}")]
+    public ActionResult FilterIssuesByJql(string type, string name, string jqlQuery)
+    {
+        var issues = _repo.FilterIssuesByJql(_db.FindUser("ironoth12@gmail.com"), type, name, jqlQuery);
+        return Ok(issues);
     }
 }
