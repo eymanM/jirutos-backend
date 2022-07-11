@@ -3,16 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JiruTosEndpoint", ".\JiruTosEndpoint\JiruTosEndpoint.csproj", "{35C265F7-94C1-4C1C-8D8D-00F53F1A12C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JiruTosEndpoint", "JiruTosEndpoint\JiruTosEndpoint.csproj", "{35C265F7-94C1-4C1C-8D8D-00F53F1A12C4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7C75776F-BD91-48D5-9552-8D4C3EE570F4}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JiraService", ".\JiraService\JiraService.csproj", "{F0BCE1D2-C87A-4137-BBAC-D95B87E6C38F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JiraService", "JiraService\JiraService.csproj", "{F0BCE1D2-C87A-4137-BBAC-D95B87E6C38F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation", ".\Foundation\Foundation.csproj", "{F40CC9C1-7994-4688-A6B3-9D1B95710B85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foundation", "Foundation\Foundation.csproj", "{F40CC9C1-7994-4688-A6B3-9D1B95710B85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickUpService", "ClickUpService\ClickUpService.csproj", "{B717BEC3-8D01-4933-9092-BAA5D4100CDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{F40CC9C1-7994-4688-A6B3-9D1B95710B85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F40CC9C1-7994-4688-A6B3-9D1B95710B85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F40CC9C1-7994-4688-A6B3-9D1B95710B85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B717BEC3-8D01-4933-9092-BAA5D4100CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B717BEC3-8D01-4933-9092-BAA5D4100CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B717BEC3-8D01-4933-9092-BAA5D4100CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B717BEC3-8D01-4933-9092-BAA5D4100CDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

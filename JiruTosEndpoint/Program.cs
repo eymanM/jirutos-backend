@@ -1,8 +1,8 @@
 using Foundation.Interfaces;
-using Foundation.Models;
-using JiruTosEndpoint;
+using Foundation.Utils;
+using Humanizer;
+using Humanizer.Localisation;
 using JiruTosEndpoint.Database;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();

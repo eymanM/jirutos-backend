@@ -11,4 +11,5 @@ public class IssueWorklogDto
     public string TimeSpent { get; set; }
     public string Type { get; set; }
     public string IntegrationName { get; set; }
+    public string? CustomField1 { get; set; }
 }

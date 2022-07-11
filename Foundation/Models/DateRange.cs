@@ -1,4 +1,4 @@
-﻿namespace Foundation.Models.JiraModels;
+﻿namespace Foundation.Models;
 
 public class DateRange
 {

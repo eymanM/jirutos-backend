@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using ClickUpService;
+using Foundation;
 using Foundation.Interfaces;
 using Foundation.Models;
 using JiraService;
@@ -15,7 +16,9 @@ public class IssuesController : ControllerBase
     public IssuesController(IDatabase db, IMapper mapper, ILogger<JiraIssueRepository> logger)
     {
         _db = db;
-        _repo = new IssueFascade(new List<IIssueRepository>() { new JiraIssueRepository(logger, mapper) });
+        _repo = new IssueFascade(new List<IIssueRepository>() {
+            new JiraIssueRepository(logger, mapper), new ClickUpIssueRepository()
+        });
     }
 
     [HttpPost]

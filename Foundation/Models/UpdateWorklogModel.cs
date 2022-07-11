@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace Foundation.Models.JiraModels;
+namespace Foundation.Models;
 
 public class UpdateWorklogModel
 {
@@ -13,5 +12,6 @@ public class UpdateWorklogModel
         ErrorMessage = "Time log is in wrong format")]
     public string TimeSpent { get; set; }
 
-    public string Started { get; set; }
+    public DateTime Started { get; set; }
+    public string? CustomField1 { get; set; }
 }

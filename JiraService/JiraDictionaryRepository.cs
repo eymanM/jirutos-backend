@@ -1,12 +1,4 @@
-﻿using Foundation.Interfaces;
-using Foundation.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JiraService;
+﻿namespace JiraService;
 
 public class JiraDictionaryRepository : IDictionaryRepository
 {

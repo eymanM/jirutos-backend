@@ -1,6 +1,4 @@
-﻿using Foundation.Models;
-
-namespace Foundation.Interfaces;
+﻿namespace Foundation.Interfaces;
 
 public interface IDictionaryRepository
 {

@@ -1,23 +1,14 @@
-﻿using AutoMapper;
-using Foundation.AbstractClasses;
-using Foundation.Models;
-using JiraService.JiraModels;
-using JiraService.Utils;
-using Microsoft.Extensions.Logging;
-
-namespace JiraService;
+﻿namespace JiraService;
 
 public class JiraIssueRepository : AbstractIssueRepository
 {
     private readonly ILogger<JiraIssueRepository> _logger;
-    private readonly DtoBuilder _dtoBuilder;
 
     public override string Type => "Jira";
 
     public JiraIssueRepository(ILogger<JiraIssueRepository> logger, IMapper mapper) : base()
     {
         _logger = logger;
-        _dtoBuilder = new(mapper);
     }
 
     public override IEnumerable<IssueWorklogDto> WorklogsForDateRange(Integration integration, DateRange dates)
@@ -31,7 +22,7 @@ public class JiraIssueRepository : AbstractIssueRepository
 
         if (issuesResponse is null || !issuesResponse.Issues.Any()) return new List<IssueWorklogDto>();
 
-        return _dtoBuilder.ToStandardWorklogModel(integration, issuesResponse, dates);
+        return DtoBuilder.ToStandardWorklogModel(integration, issuesResponse, dates);
     }
 
     public override void UpdateWorklog(Integration integration, UpdateWorklogModel model)

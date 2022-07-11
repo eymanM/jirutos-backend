@@ -1,18 +1,12 @@
-﻿using AutoMapper;
-using Foundation.Models;
+﻿using JiraService;
 
 namespace JiraService.Utils;
 
 public class DtoBuilder
 {
-    private readonly IMapper _mapper;
+    private static readonly IMapper _mapper = GetMappers.JiraToStandardWorklog();
 
-    public DtoBuilder(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
-    public List<IssueWorklogDto> ToStandardWorklogModel(Integration integration, IssuesReturnRootObj? root, DateRange dates)
+    public static List<IssueWorklogDto> ToStandardWorklogModel(Integration integration, IssuesReturnRootObj? root, DateRange dates)
     {
         List<WorklogForJiraIssue> worklogs = root.Issues
             .Select(x => x.Fields.Worklog.Worklogs

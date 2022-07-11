@@ -1,7 +1,4 @@
-﻿using Foundation.Interfaces;
-using Foundation.Models;
-
-namespace Foundation.AbstractClasses;
+﻿namespace Foundation.AbstractClasses;
 
 public abstract class AbstractIssueRepository : IIssueRepository
 {

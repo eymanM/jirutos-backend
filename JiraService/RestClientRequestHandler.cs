@@ -1,6 +1,4 @@
-﻿using Foundation.Models;
-
-namespace JiraService;
+﻿namespace JiraService;
 
 public class RestClientRequestHandler
 {
@@ -17,7 +15,12 @@ public class RestClientRequestHandler
         RestRequest request = new(path);
         request.AddUrlSegment("issueId", model.IssueId);
         request.AddUrlSegment("id", model.Id);
-        request.AddBody(model);
+        var def = new
+        {
+            started = model.Started.ToString("yyy-MM-ddTHH:mm:ss.fffzz00"),
+            timeSpent = model.TimeSpent
+        };
+        request.AddBody(def);
 
         return getClient(integration.Settings).ExecutePutAsync(request).GetAwaiter().GetResult();
     }
