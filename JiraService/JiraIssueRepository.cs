@@ -31,9 +31,31 @@ public class JiraIssueRepository : AbstractIssueRepository
         if (!response.IsSuccessful) throw new Exception(response.Content);
     }
 
-    public override List<IssueForFilter> FilterIssuesByJql(Integration integration, string jql)
+    public override List<IssueForFilter> FilterIssues(Integration integration, Filter filter)
     {
         List<IssueForFilter> res = new();
+        string? projectJql = filter.Projects.Any() ? $"project in ({string.Join(",", filter.Projects)})" : "";
+        string? statusJql = filter.Statuses.Any() ? $"status in ({string.Join(",", filter.Statuses)})" : "";
+
+        string jql = (string.Join(" AND ", new string[] { projectJql, statusJql })).Trim();
+
+        foreach (var item in filter.Others)
+        {
+            if (jql[^3..] != "AND") jql += "AND";
+            jql += item switch
+            {
+                "Assigned to me" => " assignee = currentUser() ",
+                "Created by me" => " creator = currentUser() ",
+                "Watched by me" => " watcher = currentUser() ",
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        jql = jql.Trim();
+
+        if (jql[^3..] == "AND") jql = jql[..^3];
+        if (jql[..3] == "AND") jql = jql[4..];
+
         BodyJQLModel body = JQLQueryBuilder.BodyFromString(jql, new string[] { "timetracking", "priority", "summary" });
         RestResponse response = RestClientRequestHandler.FilterIssuesByJql(integration, body);
         if (!response.IsSuccessful) throw new Exception(response.Content);

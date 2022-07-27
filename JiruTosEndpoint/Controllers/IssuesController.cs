@@ -35,10 +35,10 @@ public class IssuesController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("{type}/{name}")]
-    public ActionResult FilterIssuesByJql(string type, string name, string jqlQuery)
+    [HttpPost("{type}/{name}")]
+    public ActionResult FilterIssues(string type, string name, [FromBody] Filter filter)
     {
-        var issues = _repo.FilterIssuesByJql(_db.FindUser("ironoth12@gmail.com"), type, name, jqlQuery);
+        var issues = _repo.FilterIssuesByJql(_db.FindUser("ironoth12@gmail.com"), type, name, filter);
         return Ok(issues);
     }
 }

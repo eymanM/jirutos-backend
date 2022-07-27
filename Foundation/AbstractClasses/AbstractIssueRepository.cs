@@ -12,5 +12,5 @@ public abstract class AbstractIssueRepository : IIssueRepository
 
     public abstract void UpdateWorklog(Integration integration, UpdateWorklogModel model);
 
-    public abstract IEnumerable<IssueForFilter> FilterIssuesByJql(Integration integration, string jql);
+    public abstract IEnumerable<IssueForFilter> FilterIssues(Integration integration, Filter filter);
 }

@@ -36,7 +36,7 @@ public class IssueFascade
         repo.UpdateWorklog(integration, model);
     }
 
-    public List<IssueForFilter> FilterIssuesByJql(User user, string type, string name, string jql)
+    public List<IssueForFilter> FilterIssuesByJql(User user, string type, string name, Filter filter)
     {
         var integration = user.Integrations.FirstOrDefault(r => r.Type == type && r.Name == name);
         var repo = _repositories.FirstOrDefault(r => r.Type == type);
@@ -44,6 +44,6 @@ public class IssueFascade
         if (integration is null) throw new Exception("update worklog - integration not found");
         if (repo is null) throw new Exception("update worklog - repo not found");
 
-        return repo.FilterIssuesByJql(integration, jql).ToList();
+        return repo.FilterIssues(integration, filter).ToList();
     }
 }

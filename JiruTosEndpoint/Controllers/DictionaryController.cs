@@ -1,7 +1,7 @@
-﻿using Foundation;
+﻿using ClickUpService;
+using Foundation;
 using Foundation.Interfaces;
 using JiraService;
-using Microsoft.AspNetCore.Mvc;
 
 namespace JiruTosEndpoint.Controllers;
 
@@ -14,7 +14,8 @@ public class DictionaryController : Controller
 
     public DictionaryController(IDatabase db)
     {
-        _repo = new DictionaryFascade(new List<IDictionaryRepository>() { new JiraDictionaryRepository() });
+        _repo = new DictionaryFascade(new List<IDictionaryRepository>() { 
+            new JiraDictionaryRepository(), new ClickUpDictionaryRepository() });
         _db = db;
     }
 

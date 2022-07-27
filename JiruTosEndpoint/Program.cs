@@ -1,7 +1,4 @@
 using Foundation.Interfaces;
-using Foundation.Utils;
-using Humanizer;
-using Humanizer.Localisation;
 using JiruTosEndpoint.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +22,7 @@ var configuration = new MapperConfiguration(cfg =>
     cfg.CreateMap<WorklogForJiraIssue, IssueWorklogDto>()
     .ForMember(x => x.CommentText, y => y
     .MapFrom(z => z.Comment.CommentContentObject
-                  .FirstOrDefault().Content.FirstOrDefault().Text));
+                  .FirstOrDefault()!.Content.FirstOrDefault()!.Text));
 });
 
 builder.Services.AddSingleton<IMapper>(configuration.CreateMapper());

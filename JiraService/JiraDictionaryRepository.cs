@@ -10,7 +10,7 @@ public class JiraDictionaryRepository : IDictionaryRepository
         var response = RestClientRequestHandler.AvailableProjectsForUser(integration);
         if (!response.IsSuccessful) throw new Exception(response.Content);
 
-        dynamic[] projectsJObject = JsonConvert.DeserializeObject<dynamic[]>(response.Content)!;
+        dynamic[] projectsJObject = JsonConvert.DeserializeObject<dynamic[]>(response.Content!)!;
         foreach (var item in projectsJObject)
         {
             projects.Add(new Project { Id = item.id, Key = item.key, Name = item.name });
@@ -24,7 +24,7 @@ public class JiraDictionaryRepository : IDictionaryRepository
         var response = RestClientRequestHandler.AllStatuses(integration);
         if (!response.IsSuccessful) throw new Exception(response.Content);
 
-        List<Status> statuses = JsonConvert.DeserializeObject<List<Status>>(response.Content);
+        List<Status> statuses = JsonConvert.DeserializeObject<List<Status>>(response.Content!)!;
 
         return statuses;
     }

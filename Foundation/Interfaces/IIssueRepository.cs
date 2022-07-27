@@ -8,5 +8,5 @@ public interface IIssueRepository
 
     void UpdateWorklog(Integration integration, UpdateWorklogModel model);
 
-    IEnumerable<IssueForFilter> FilterIssuesByJql(Integration integration, string jql);
+    IEnumerable<IssueForFilter> FilterIssues(Integration integration, Filter filter);
 }
