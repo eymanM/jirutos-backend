@@ -1,4 +1,6 @@
-﻿namespace JiraService;
+﻿using System.Net;
+
+namespace JiraService;
 
 public class JiraIssueRepository : AbstractIssueRepository
 {
@@ -77,5 +79,10 @@ public class JiraIssueRepository : AbstractIssueRepository
         }
 
         return res;
+    }
+
+    public override HttpStatusCode AddWorklog(Integration integration, AddWorklog worklogAddObj)
+    {
+        return RestClientRequestHandler.AddWorklog(integration, worklogAddObj);
     }
 }

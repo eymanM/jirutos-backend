@@ -1,4 +1,4 @@
-﻿namespace ClickUpService.Utils;
+﻿namespace Foundation.Utils;
 
 public class SimpleUtils
 {

@@ -1,4 +1,6 @@
-﻿namespace Foundation.Interfaces;
+﻿using System.Net;
+
+namespace Foundation.Interfaces;
 
 public interface IIssueRepository
 {
@@ -9,4 +11,6 @@ public interface IIssueRepository
     void UpdateWorklog(Integration integration, UpdateWorklogModel model);
 
     IEnumerable<IssueForFilter> FilterIssues(Integration integration, Filter filter);
+
+    HttpStatusCode AddWorklog(Integration integration, AddWorklog worklogAddObj);
 }

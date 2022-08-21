@@ -83,6 +83,24 @@ public class RestClientRequestHandler
         return resps;
     }
 
+    public static RestResponse AddWorklog(Integration inte, AddWorklog worklogAddObj)
+    {
+        RestRequest request = new("/team/{teamId}/time_entries");
+
+        request.AddUrlSegment("teamId", worklogAddObj.CustomField!);
+        long duration = (long)TimeSpanString.SpanStrToTSpan(worklogAddObj.TimeSpend).TotalMilliseconds;
+        long start = worklogAddObj.StartedUnix;
+        var def = new
+        {
+            start,
+            duration,
+            tid = worklogAddObj.Id
+        };
+        request.AddBody(def);
+
+        return getClient(inte.Settings).ExecutePostAsync(request).GetAwaiter().GetResult();
+    }
+
     private static IdNameStruct getCurrentUserData(Integration inte, string path = @"/user")
     {
         RestRequest req = new(path);

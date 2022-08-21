@@ -11,4 +11,5 @@ public class IssueForFilter
 
     public string Type { get; set; }
     public string IntegrationName { get; set; }
+    public string CustomField { get; set; }
 }

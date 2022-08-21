@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 
 namespace ClickUpService;
 
@@ -30,11 +31,12 @@ public class ClickUpIssueRepository : AbstractIssueRepository
         resps.ForEach(resp =>
         {
             var def = new {
-            tasks = SimpleHelpers.GetEmptyGenericList(new
-            {
-                id = "", name = "", description = "",
-                status = new { status = "" }, time_spent = 0,
-            })};
+                tasks = SimpleHelpers.GetEmptyGenericList(new
+                {
+                    id = "", name = "", description = "",
+                    status = new { status = "" }, time_spent = 0,
+                    team_id = ""
+            }) };
 
             var tasksData = JsonConvert.DeserializeAnonymousType(resp.Content!, def)!.tasks;
             tasksData.ForEach(t => issues.Add(new IssueForFilter
@@ -45,10 +47,19 @@ public class ClickUpIssueRepository : AbstractIssueRepository
                 TimeSpent = TimeSpanString.TSpanToSpanStr(TimeSpan.FromMilliseconds(t.time_spent)),
                 Priority = t.status.status,
                 Type = integration.Type,
-                IntegrationName = integration.Name
+                IntegrationName = integration.Name,
+                CustomField = t.team_id
             }));
         });
 
         return issues;
+    }
+
+    public override HttpStatusCode AddWorklog(Integration integration, AddWorklog worklogAddObj)
+    {
+        RestResponse response = RestClientRequestHandler.AddWorklog(integration, worklogAddObj);
+        if (!response.IsSuccessful) throw new Exception(response.Content);
+
+        return response.StatusCode;
     }
 }

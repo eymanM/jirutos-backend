@@ -1,4 +1,7 @@
-﻿namespace JiraService;
+﻿using Foundation.Utils;
+using System.Net;
+
+namespace JiraService;
 
 public class RestClientRequestHandler
 {
@@ -46,6 +49,19 @@ public class RestClientRequestHandler
 
         return getClient(integration.Settings).ExecutePostAsync(request).GetAwaiter().GetResult();
     }
+    public static HttpStatusCode AddWorklog(Integration integration,
+        AddWorklog worklogAddObj, string path = @"/issue/{issueId}/worklog")
+    {
+        RestRequest request = new(path);
+        request.AddUrlSegment("issueId", worklogAddObj.Id);
+        request.AddJsonBody(new
+        {
+            timeSpent = worklogAddObj.TimeSpend,
+            started = SimpleUtils.UnixTimeToDT(worklogAddObj.StartedUnix).ToString("yyy-MM-ddTHH:mm:ss.fffzz00")
+        });
+
+        return getClient(integration.Settings).ExecutePostAsync(request).GetAwaiter().GetResult().StatusCode;
+    }
 
     private static RestClient getClient(Dictionary<string, string> settings)
     {
@@ -54,4 +70,5 @@ public class RestClientRequestHandler
             Authenticator = new HttpBasicAuthenticator(settings["Email"], settings["Token"])
         };
     }
+
 }

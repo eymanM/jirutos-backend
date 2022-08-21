@@ -41,4 +41,11 @@ public class IssuesController : ControllerBase
         var issues = _repo.FilterIssuesByJql(_db.FindUser("ironoth12@gmail.com"), type, name, filter);
         return Ok(issues);
     }
+
+    [HttpPost("{type}/{name}")]
+    public ActionResult AddWorklog(string type, string name, [FromBody] AddWorklog addWorklogObj)
+    {
+        var status = _repo.AddWorklog(_db.FindUser("ironoth12@gmail.com"), type, name, addWorklogObj);
+        return Ok(status);
+    }
 }

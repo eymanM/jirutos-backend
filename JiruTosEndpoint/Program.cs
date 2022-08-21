@@ -11,10 +11,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
-    builder.WithOrigins("http://localhost:3000")
-           .AllowAnyMethod()
-           .AllowAnyHeader()
-           .AllowCredentials();
+      builder.WithOrigins("http://localhost:3000")
+          .AllowAnyMethod()
+          .AllowAnyHeader()
+          .AllowCredentials();
 }));
 
 var configuration = new MapperConfiguration(cfg =>
