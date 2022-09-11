@@ -10,7 +10,7 @@ public class RestClientRequestHandler
         RestRequest request = new(path);
         request.AddJsonBody(body);
 
-        return getClient(integration.Settings).ExecutePostAsync(request).GetAwaiter().GetResult();
+        return getClient(integration.Settings).ExecuteGetAsync(request).GetAwaiter().GetResult();
     }
 
     public static RestResponse UpdateWorklog(Integration integration, UpdateWorklogModel model, string path = @"/issue/{issueId}/worklog/{id}")
@@ -49,6 +49,7 @@ public class RestClientRequestHandler
 
         return getClient(integration.Settings).ExecutePostAsync(request).GetAwaiter().GetResult();
     }
+
     public static HttpStatusCode AddWorklog(Integration integration,
         AddWorklog worklogAddObj, string path = @"/issue/{issueId}/worklog")
     {
@@ -63,6 +64,11 @@ public class RestClientRequestHandler
         return getClient(integration.Settings).ExecutePostAsync(request).GetAwaiter().GetResult().StatusCode;
     }
 
+    public static void BasicReport(Integration integration, List<string> projectsIds)
+    {
+        var a = 2;
+    }
+
     private static RestClient getClient(Dictionary<string, string> settings)
     {
         return new(settings["URL"])
@@ -70,5 +76,4 @@ public class RestClientRequestHandler
             Authenticator = new HttpBasicAuthenticator(settings["Email"], settings["Token"])
         };
     }
-
 }

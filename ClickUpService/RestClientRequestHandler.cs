@@ -49,11 +49,15 @@ public class RestClientRequestHandler
     public static List<RestResponse> FilterIssuesByJqlAsync(Integration inte, Filter filter)
     {
         var reqs = reqsForTeams(inte, "/team/{teamId}/task");
+        if(filter.Projects is {})
+            filter.Projects.ForEach(f => reqs.ForEach(r => r.AddQueryParameter("space_ids[]", f)));
 
-        filter.Projects.ForEach(f => reqs.ForEach(r => r.AddQueryParameter("space_ids[]", f)));
-        filter.Statuses.ForEach(s => reqs.ForEach(r => r.AddQueryParameter("statuses[]", s)));
+        if (filter.Statuses is { })
+            filter.Statuses.ForEach(s => reqs.ForEach(r => r.AddQueryParameter("statuses[]", s)));
+
         var user = getCurrentUserData(inte);
 
+        if(filter.Others is not null)
         foreach (string item in filter.Others)
         {
             var param = item switch

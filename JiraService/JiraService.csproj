@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.7.5.9" />
+    <PackageReference Include="AWSSDK.Core" Version="3.7.12.25" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Include="RestSharp" Version="107.3.0" />
