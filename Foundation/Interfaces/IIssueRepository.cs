@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Foundation.Models;
+using System.Net;
 
 namespace Foundation.Interfaces;
 
@@ -13,4 +14,6 @@ public interface IIssueRepository
     IEnumerable<IssueForFilter> FilterIssues(Integration integration, Filter filter);
 
     HttpStatusCode AddWorklog(Integration integration, AddWorklog worklogAddObj);
+
+    bool IfIssueExist(Integration integration, string issueId);
 }

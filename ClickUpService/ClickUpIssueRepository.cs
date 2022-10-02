@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Amazon.CognitoIdentityProvider.Model.Internal.MarshallTransformations;
+using System.Collections.Generic;
 using System.Net;
+using System.Reflection;
 
 namespace ClickUpService;
 
@@ -61,5 +63,11 @@ public class ClickUpIssueRepository : AbstractIssueRepository
         if (!response.IsSuccessful) throw new Exception(response.Content);
 
         return response.StatusCode;
+    }
+
+    public override bool  IfIssueExist(Integration integration, string issueId)
+    {
+        RestResponse response = RestClientRequestHandler.IfIssueExist(integration, issueId);
+        return response.IsSuccessful;
     }
 }

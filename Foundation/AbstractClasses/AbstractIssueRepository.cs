@@ -4,9 +4,7 @@ namespace Foundation.AbstractClasses;
 
 public abstract class AbstractIssueRepository : IIssueRepository
 {
-    public AbstractIssueRepository()
-    {
-    }
+    public AbstractIssueRepository() { }
 
     public abstract string Type { get; }
 
@@ -17,4 +15,5 @@ public abstract class AbstractIssueRepository : IIssueRepository
     public abstract IEnumerable<IssueForFilter> FilterIssues(Integration integration, Filter filter);
 
     public abstract HttpStatusCode AddWorklog(Integration integration, AddWorklog worklogAddObj);
+    public abstract bool IfIssueExist(Integration integration, string issueId);
 }

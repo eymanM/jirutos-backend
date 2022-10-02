@@ -1,4 +1,5 @@
 ﻿using Foundation.Utils;
+using System.IO;
 using System.Net;
 
 namespace JiraService;
@@ -12,6 +13,15 @@ public class RestClientRequestHandler
 
         return getClient(integration.Settings).ExecuteGetAsync(request).GetAwaiter().GetResult();
     }
+
+    public static RestResponse PostJQLResponse(Integration integration, BodyJQLModel body, string path = @"/search")
+    {
+        RestRequest request = new(path);
+        request.AddJsonBody(body);
+
+        return getClient(integration.Settings).ExecutePostAsync(request).GetAwaiter().GetResult();
+    }
+
 
     public static RestResponse UpdateWorklog(Integration integration, UpdateWorklogModel model, string path = @"/issue/{issueId}/worklog/{id}")
     {
@@ -75,5 +85,13 @@ public class RestClientRequestHandler
         {
             Authenticator = new HttpBasicAuthenticator(settings["Email"], settings["Token"])
         };
+    }
+
+    internal static RestResponse IfIssueExist(Integration integration, string issueId, string path = @"/issue/{issueId}")
+    {
+        RestRequest request = new(path);
+        request.AddUrlSegment("issueId", issueId);
+
+        return getClient(integration.Settings).ExecuteGetAsync(request).GetAwaiter().GetResult();
     }
 }

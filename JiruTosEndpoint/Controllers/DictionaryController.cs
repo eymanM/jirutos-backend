@@ -2,6 +2,7 @@
 using Foundation;
 using Foundation.Interfaces;
 using JiraService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JiruTosEndpoint.Controllers;
 
@@ -14,11 +15,11 @@ public class DictionaryController : Controller
 
     public DictionaryController(IDatabase db)
     {
-        _repo = new DictionaryFascade(new List<IDictionaryRepository>() { 
+        _repo = new DictionaryFascade(new List<IDictionaryRepository>() {
             new JiraDictionaryRepository(), new ClickUpDictionaryRepository() });
         _db = db;
     }
-
+    [Authorize]
     [HttpGet("{type}/{name}")]
     public ActionResult AvailableProjectsForUser(string type, string name)
     {

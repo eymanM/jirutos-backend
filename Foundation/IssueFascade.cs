@@ -59,4 +59,14 @@ public class IssueFascade
         return repo.AddWorklog(integration, worklogAddObj);
     }
 
+    public Object IsIssueExist(User user, string type, string name, string issueId)
+    {
+        var integration = user.Integrations.FirstOrDefault(r => r.Type == type && r.Name == name);
+        var repo = _repositories.FirstOrDefault(r => r.Type == type);
+
+        if (integration is null) throw new Exception("update worklog - integration not found");
+        if (repo is null) throw new Exception("update worklog - repo not found");
+
+        return repo.IfIssueExist(integration, issueId);
+    }
 }

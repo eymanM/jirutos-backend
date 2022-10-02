@@ -142,4 +142,13 @@ public class RestClientRequestHandler
         var teams =  JsonConvert.DeserializeAnonymousType(res.Content!, def)!.teams;
         return teams;
     }
+
+    internal static RestResponse IfIssueExist(Integration inte, string issueId)
+    {
+        RestRequest request = new("/task/{taskId}");
+
+        request.AddUrlSegment("taskId", issueId);
+
+        return getClient(inte.Settings).ExecuteGetAsync(request).GetAwaiter().GetResult();
+    }
 }

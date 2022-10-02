@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Reflection;
 
 namespace JiraService;
 
@@ -16,7 +17,7 @@ public class JiraIssueRepository : AbstractIssueRepository
     public override IEnumerable<IssueWorklogDto> WorklogsForDateRange(Integration integration, DateRange dates)
     {
         BodyJQLModel body = JQLQueryBuilder.CurrentUserDateBoundedWorklogs(dates);
-        RestResponse response = RestClientRequestHandler.GetJQLResponse(integration, body);
+        RestResponse response = RestClientRequestHandler.PostJQLResponse(integration, body);
 
         if (!response.IsSuccessful) throw new Exception(response.Content);
 
@@ -84,5 +85,11 @@ public class JiraIssueRepository : AbstractIssueRepository
     public override HttpStatusCode AddWorklog(Integration integration, AddWorklog worklogAddObj)
     {
         return RestClientRequestHandler.AddWorklog(integration, worklogAddObj);
+    }
+
+    public override bool IfIssueExist(Integration integration, string issueId)
+    {
+        RestResponse response = RestClientRequestHandler.IfIssueExist(integration, issueId);
+        return response.IsSuccessful;
     }
 }

@@ -6,6 +6,8 @@ using Foundation.Models.Structs;
 using Microsoft.AspNetCore.Authorization;
 using JiraService;
 using System.Drawing;
+using Amazon.Extensions.CognitoAuthentication;
+using Amazon.Runtime;
 
 namespace JiruTosEndpoint.Controllers;
 
@@ -37,7 +39,7 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult> RegisterUser([FromBody] EmailPasswordStruct registerUserObj)
+    public async Task<ActionResult> SignUp([FromBody] EmailPasswordStruct registerUserObj)
     {
         var request = new SignUpRequest
         {
@@ -103,6 +105,27 @@ public class UserController : Controller
         try
         {
             var response = await _cognito.AdminInitiateAuthAsync(request);
+            return Ok(response.AuthenticationResult);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return Problem(e.Message);
+        }
+    }
+
+    [HttpGet("{username}/{refreshToken}")]
+    public async Task<ActionResult> RenewTokens(string username, string refreshToken)
+    {
+        AmazonCognitoIdentityProviderClient provider =new (new AnonymousAWSCredentials());
+        CognitoUserPool userPool = new (_config["AWS:UserPoolId"], _config["AWS:AppClientId"], provider);
+        CognitoUser user = new (username, _config["AWS:AppClientId"], userPool, provider);
+
+        user.SessionTokens = new CognitoUserSession(null, null, refreshToken, DateTime.UtcNow, DateTime.UtcNow.AddSeconds(3600));
+        var request = new InitiateRefreshTokenAuthRequest() { AuthFlowType = AuthFlowType.REFRESH_TOKEN_AUTH };
+        try
+        {
+            var response = await user.StartWithRefreshTokenAuthAsync(request);
             return Ok(response.AuthenticationResult);
         }
         catch (Exception e)

@@ -48,4 +48,11 @@ public class IssuesController : ControllerBase
         var status = _repo.AddWorklog(_db.FindUser("ironoth12@gmail.com"), type, name, addWorklogObj);
         return Ok(status);
     }
+
+    [HttpGet("{type}/{name}/{issueId}")]
+    public ActionResult IsIssueExist(string type, string name, string issueId)
+    {
+        var resp = _repo.IsIssueExist(_db.FindUser("ironoth12@gmail.com"), type, name, issueId);
+        return Ok(new { Exist = resp});
+    }
 }
