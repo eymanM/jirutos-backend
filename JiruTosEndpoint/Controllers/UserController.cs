@@ -5,7 +5,6 @@ using Foundation.Interfaces;
 using Foundation.Models.Structs;
 using Microsoft.AspNetCore.Authorization;
 using JiraService;
-using System.Drawing;
 using Amazon.Extensions.CognitoAuthentication;
 using Amazon.Runtime;
 
@@ -28,10 +27,23 @@ public class UserController : Controller
         _cognito = new(_config["AWS:AccessId"], _config["AWS:SecretId"], RegionEndpoint.EUWest1);
     }
 
-    [HttpGet("{email}")]
-    public ActionResult Integrations(string email)
+    [Authorize]
+    [HttpGet()]
+    public ActionResult Integrations()
     {
-        _logger.LogWarning(User.Identity.ToString());
+        _logger.LogWarning(User.Identity!.ToString());
+        var email = User.Claims.ToList().First(x => x.Type == "cognito:username").Value;
+        var user = _db.FindUser(email);
+        var integrations = user.Integrations;
+        var basicIntegrationsData = integrations.Select(integ => new { type = integ.Type, name = integ.Name });
+        return Ok(basicIntegrationsData);
+    }
+
+    [Authorize]
+    [HttpPost()]
+    public ActionResult SaveIntegration()
+    {
+        var email = User.Claims.ToList().First(x => x.Type == "cognito:username").Value;
         var user = _db.FindUser(email);
         var integrations = user.Integrations;
         var basicIntegrationsData = integrations.Select(integ => new { type = integ.Type, name = integ.Name });

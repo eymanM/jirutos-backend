@@ -1,5 +1,4 @@
 ﻿using Foundation.Interfaces;
-using Foundation.Models;
 
 namespace ClickUpService;
 
@@ -34,13 +33,14 @@ public class ClickUpReportRepository : IReportRepository
 
             var tasksData = JsonConvert.DeserializeAnonymousType(resp.Content!, def)!.tasks;
             objForCSV.AddRange(tasksData.Select(t => new BasicIssueReportModel
-                {
-                    Title = t.name,
-                    Assignee = string.Join(',', t.assignees.Select(x => x.username)),
-                    ProjectName = projs.FirstOrDefault(p => p.Id == t.space.id)!.Name,
-                    TotalTime = TimeSpanString.TSpanToSpanStr(TimeSpan.FromMilliseconds(t.time_spent))
-                }
-            ).ToList());;
+            {
+                Title = t.name,
+                Assignee = string.Join(',', t.assignees.Select(x => x.username)),
+                ProjectName = projs.FirstOrDefault(p => p.Id == t.space.id)!.Name,
+                TotalWorkTime = TimeSpanString.TSpanToWorkSpanStr(TimeSpan.FromMilliseconds(t.time_spent)),
+                TotalTimeMS = t.time_spent,
+            }
+            ).ToList());
         });
 
         return objForCSV;
@@ -79,12 +79,13 @@ public class ClickUpReportRepository : IReportRepository
         });
 
         foreach (var item in projTimeSpent)
-        objForCSV.Add(new BasicProjectReportModel
-        {
-            Id = item.Key,
-            Name = projs.FirstOrDefault(p => p.Id == item.Key)!.Name,
-            TotalTime = TimeSpanString.TSpanToSpanStr(TimeSpan.FromMilliseconds(item.Value))
-        });
+            objForCSV.Add(new BasicProjectReportModel
+            {
+                Id = item.Key,
+                Name = projs.FirstOrDefault(p => p.Id == item.Key)!.Name,
+                TotalWorkTime = TimeSpanString.TSpanToWorkSpanStr(TimeSpan.FromMilliseconds(item.Value)),
+                TotalTimeMS = item.Value
+            });
         
         return objForCSV;
     }

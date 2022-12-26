@@ -1,7 +1,10 @@
-﻿namespace Foundation.Utils;
+﻿using AutoMapper.Configuration.Conventions;
+
+namespace Foundation.Utils;
 
 public class TimeSpanString
 {
+    const int WEEK_WORK_HOURS = 40;
     public static string TSpanToSpanStr(TimeSpan ts)
     {
         string weeks, days, hours, minutes;
@@ -13,6 +16,31 @@ public class TimeSpanString
         days = daysTemp > 0 ? Convert.ToString(daysTemp) + "d" : "";
 
         hours = ts.Hours > 0 ? Convert.ToString(ts.Hours) + "h" : "";
+
+        minutes = ts.Minutes > 0 ? Convert.ToString(ts.Minutes) + "m" : "";
+        string res = "";
+
+        foreach (string item in new string[] { weeks, days, hours, minutes })
+            if (!string.IsNullOrEmpty(item)) res += (item + " ");
+
+        return res is "" ? "1m" : res.Trim();
+    }
+
+    public static string TSpanToWorkSpanStr(TimeSpan ts)
+    {
+        string weeks, days, hours, minutes;
+
+        int weeksTemp = (int)(ts.TotalHours / WEEK_WORK_HOURS > 0 ? (int)ts.TotalHours / WEEK_WORK_HOURS : 0);
+        weeks = weeksTemp > 0 ? Convert.ToString(weeksTemp) + "w" : "";
+
+        int leftedHours = (int)(ts.TotalHours - (WEEK_WORK_HOURS * weeksTemp));
+
+        int daysTemp = (leftedHours / 8) > 0 ? (leftedHours / 8) : 0;
+        days = daysTemp > 0 ? Convert.ToString(daysTemp) + "d" : "";
+
+        leftedHours -= daysTemp * 8;
+
+        hours = leftedHours > 0 ? Convert.ToString(leftedHours) + "h" : "";
 
         minutes = ts.Minutes > 0 ? Convert.ToString(ts.Minutes) + "m" : "";
         string res = "";

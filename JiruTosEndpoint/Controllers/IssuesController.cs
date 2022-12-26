@@ -3,9 +3,11 @@ using Foundation;
 using Foundation.Interfaces;
 using Foundation.Models;
 using JiraService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JiruTosEndpoint.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]/[action]")]
 public class IssuesController : ControllerBase
@@ -24,35 +26,40 @@ public class IssuesController : ControllerBase
     [HttpPost]
     public ActionResult DateRangeWorklogs([FromBody] DateRange scanDate)
     {
-        var worklogs = _repo.WorklogsForDateRange(_db.FindUser("ironoth12@gmail.com"), scanDate);
+        var email = User.Claims.ToList().First(x => x.Type == "cognito:username").Value;
+        var worklogs = _repo.WorklogsForDateRange(_db.FindUser(email), scanDate);
         return Ok(worklogs);
     }
 
     [HttpPost("{type}/{name}")]
     public ActionResult UpdateWorklog(string type, string name, [FromBody] UpdateWorklogModel model)
     {
-        _repo.UpdateWorklog(_db.FindUser("ironoth12@gmail.com"), model, type, name);
+        var email = User.Claims.ToList().First(x => x.Type == "cognito:username").Value;
+        _repo.UpdateWorklog(_db.FindUser(email), model, type, name);
         return Ok();
     }
 
     [HttpPost("{type}/{name}")]
     public ActionResult FilterIssues(string type, string name, [FromBody] Filter filter)
     {
-        var issues = _repo.FilterIssuesByJql(_db.FindUser("ironoth12@gmail.com"), type, name, filter);
+        var email = User.Claims.ToList().First(x => x.Type == "cognito:username").Value;
+        var issues = _repo.FilterIssuesByJql(_db.FindUser(email), type, name, filter);
         return Ok(issues);
     }
 
     [HttpPost("{type}/{name}")]
     public ActionResult AddWorklog(string type, string name, [FromBody] AddWorklog addWorklogObj)
     {
-        var status = _repo.AddWorklog(_db.FindUser("ironoth12@gmail.com"), type, name, addWorklogObj);
+        var email = User.Claims.ToList().First(x => x.Type == "cognito:username").Value;
+        var status = _repo.AddWorklog(_db.FindUser(email), type, name, addWorklogObj);
         return Ok(status);
     }
 
     [HttpGet("{type}/{name}/{issueId}")]
-    public ActionResult IsIssueExist(string type, string name, string issueId)
+    public ActionResult IfIssueExist(string type, string name, string issueId)
     {
-        var resp = _repo.IsIssueExist(_db.FindUser("ironoth12@gmail.com"), type, name, issueId);
+        var email = User.Claims.ToList().First(x => x.Type == "cognito:username").Value;
+        var resp = _repo.IsIssueExist(_db.FindUser(email), type, name, issueId);
         return Ok(new { Exist = resp});
     }
 }

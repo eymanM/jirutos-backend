@@ -1,6 +1,4 @@
 ﻿using MongoDB.Driver;
-using Microsoft.Extensions.Configuration;
-using MongoDB.Bson;
 using Foundation.Models;
 using Foundation.Interfaces;
 
@@ -26,4 +24,6 @@ public class Database : IDatabase
     }
 
     public User FindUser(string email) => userCollection.Find(Filters.GetFindUserByMailFilter(email)).FirstOrDefault();
+
+    public void DeletAllWithField(string fieldName) => userCollection.DeleteMany(Filters.DeleteAllWithField(fieldName));
 }

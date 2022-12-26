@@ -1,6 +1,4 @@
-﻿using Foundation.Interfaces;
-using Foundation.Models;
-using System.Net;
+﻿using System.Net;
 
 namespace Foundation;
 

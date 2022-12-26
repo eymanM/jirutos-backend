@@ -32,13 +32,14 @@ public class JiraReportRepository : IReportRepository
         List<BasicIssueReportModel> resp = new();
 
         foreach (var item in timeSpendObjs)
-        resp.Add(new BasicIssueReportModel
-        {
-            Title = item.fields.summary,
-            Assignee = item.fields.assignee.displayName,
-            ProjectName = item.fields.project.name,
-            TotalTime = TimeSpanString.TSpanToSpanStr(TimeSpan.FromSeconds(item.fields.timespent)),
-        });
+            resp.Add(new BasicIssueReportModel
+            {
+                Title = item.fields.summary,
+                Assignee = item.fields.assignee.displayName,
+                ProjectName = item.fields.project.name,
+                TotalWorkTime = TimeSpanString.TSpanToWorkSpanStr(TimeSpan.FromSeconds(item.fields.timespent)),
+                TotalTimeMS = item.fields.timespent
+            });
 
         return resp;
     }
@@ -65,8 +66,13 @@ public class JiraReportRepository : IReportRepository
             var items = item.ToList();
             var timeSecSum = items.Sum(x => x.fields.timespent);
             var ts = TimeSpan.FromSeconds(timeSecSum);
-            resp.Add(new BasicProjectReportModel { Id = item.Key, Name = items.FirstOrDefault()!.fields.project.name,
-                TotalTime = TimeSpanString.TSpanToSpanStr(ts)});
+            resp.Add(new BasicProjectReportModel
+            {
+                Id = item.Key,
+                Name = items.FirstOrDefault()!.fields.project.name,
+                TotalWorkTime = TimeSpanString.TSpanToWorkSpanStr(ts),
+                TotalTimeMS = ts.Milliseconds
+            });
         }
         return resp;
     }

@@ -23,14 +23,17 @@ public class DictionaryController : Controller
     [HttpGet("{type}/{name}")]
     public ActionResult AvailableProjectsForUser(string type, string name)
     {
-        var projects = _repo.AvailableProjectsForUser(_db.FindUser("ironoth12@gmail.com"), type, name);
+        var email = User.Claims.ToList().First(x => x.Type == "cognito:username").Value;
+        var projects = _repo.AvailableProjectsForUser(_db.FindUser(email), type, name);
         return Ok(projects);
     }
 
+    [Authorize]
     [HttpGet("{type}/{name}")]
     public ActionResult Statuses(string type, string name)
     {
-        var statuses = _repo.AllStatuses(_db.FindUser("ironoth12@gmail.com"), type, name);
+        var email = User.Claims.ToList().First(x => x.Type == "cognito:username").Value;
+        var statuses = _repo.AllStatuses(_db.FindUser(email), type, name);
         return Ok(statuses);
     }
 }

@@ -34,6 +34,11 @@ public class JiraIssueRepository : AbstractIssueRepository
         if (!response.IsSuccessful) throw new Exception(response.Content);
     }
 
+    public override HttpStatusCode AddWorklog(Integration integration, AddWorklog worklogAddObj)
+    {
+        return RestClientRequestHandler.AddWorklog(integration, worklogAddObj);
+    }
+
     public override List<IssueForFilter> FilterIssues(Integration integration, Filter filter)
     {
         List<IssueForFilter> res = new();
@@ -80,11 +85,6 @@ public class JiraIssueRepository : AbstractIssueRepository
         }
 
         return res;
-    }
-
-    public override HttpStatusCode AddWorklog(Integration integration, AddWorklog worklogAddObj)
-    {
-        return RestClientRequestHandler.AddWorklog(integration, worklogAddObj);
     }
 
     public override bool IfIssueExist(Integration integration, string issueId)

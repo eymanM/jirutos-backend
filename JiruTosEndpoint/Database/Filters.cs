@@ -10,4 +10,11 @@ public class Filters
         var builder = Builders<User>.Filter;
         return builder.Eq("Email", email); // optimistic offline lock
     }
+
+    public static FilterDefinition<User> DeleteAllWithField(string fieldName)
+    {
+        var builder = Builders<User>.Filter;
+        return builder.Exists(fieldName);
+    }
+
 }

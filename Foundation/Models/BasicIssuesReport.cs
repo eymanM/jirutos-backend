@@ -11,6 +11,9 @@ public class BasicIssueReportModel
     public string ProjectName { get; set; }
 
     [Name("Total time")]
-    public string TotalTime { get; set; }
+    public string TotalWorkTime { get; set; }
+
+    [Ignore]
+    public int TotalTimeMS { get; set; }
 }
 

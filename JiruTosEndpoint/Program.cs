@@ -1,41 +1,13 @@
-using Amazon.Extensions.NETCore.Setup;
 using Foundation.Interfaces;
 using JiruTosEndpoint.Database;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Logging;
-using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 IdentityModelEventSource.ShowPII = true;
-
-// Add services to the container.
-
-//builder.Services.AddCognitoIdentity();
-
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-//})
-//.AddCookie()
-//.AddOpenIdConnect(options =>
-//{
-//    options.ResponseType = builder.Configuration["Authentication:Cognito:ResponseType"];
-//    options.MetadataAddress = builder.Configuration["Authentication:Cognito:MetadataAddress"];
-//    options.ClientId = builder.Configuration["Authentication:Cognito:ClientId"];
-//    options.Events = new OpenIdConnectEvents()
-//    {
-//        OnRedirectToIdentityProviderForSignOut = OnRedirectToIdentityProviderForSignOut
-//    };
-//    //options.SaveTokens = true;
-
-//});
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
